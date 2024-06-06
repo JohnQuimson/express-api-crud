@@ -26,7 +26,6 @@ const { createCategory } = require('./utils/crud-category.js');
 const { createTag } = require('./utils/crud-tag.js');
 
 app.use(notFound);
-
 app.use(errorHandler);
 
 app.listen(port, () => {
