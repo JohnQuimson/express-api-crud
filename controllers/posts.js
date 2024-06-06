@@ -50,16 +50,25 @@ const show = async (req, res) => {
 
 const index = async (req, res) => {
   try {
-    const { published } = req.query;
-    const where = {};
+    let { page, limit, published } = req.query;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 5;
 
+    const offset = (page - 1) * limit; // elementi da saltare per la visualiz.
+
+    // filtro per pubblicazione
+    const where = {};
     if (published === 'true') {
       where.published = true;
     } else if (published === 'false') {
       where.published = false;
     }
 
-    const posts = await prisma.post.findMany({ where });
+    const posts = await prisma.post.findMany({
+      where,
+      take: limit,
+      skip: offset,
+    });
 
     res.json({ data: posts });
   } catch (error) {
@@ -92,9 +101,18 @@ const update = async (req, res) => {
   }
 };
 
+const destroy = async (req, res) => {
+  const { slug } = req.params;
+  await prisma.post.delete({
+    where: { slug: slug },
+  });
+  res.json(`Post con slug ${slug} eliminato con successo.`);
+};
+
 module.exports = {
   store,
   show,
   index,
   update,
+  destroy,
 };

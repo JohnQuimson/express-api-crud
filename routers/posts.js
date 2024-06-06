@@ -12,5 +12,6 @@ router.post('/', store);
 router.get('/:slug', show);
 router.get('/', index);
 router.put('/:slug', update);
+router.delete('/:slug', destroy);
 
 module.exports = router;
