@@ -1,5 +1,7 @@
 const express = require('express');
 const postRouter = require('./routers/posts.js');
+const errorHandler = require('./middlewares/errorHandler.js');
+const notFound = require('./middlewares/notFound.js');
 const app = express();
 
 const dotenv = require('dotenv');
@@ -22,6 +24,10 @@ const {
 const { createCategory } = require('./utils/crud-category.js');
 
 const { createTag } = require('./utils/crud-tag.js');
+
+app.use(notFound);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server avviato su: http://localhost:${port}`);
