@@ -68,8 +68,33 @@ const index = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const { title, content, published } = req.body;
+
+    const newSlug = title ? generateSlug(title) : undefined;
+
+    const data = {
+      title,
+      content,
+      published,
+      ...(newSlug && { slug: newSlug }),
+    };
+
+    const post = await prisma.post.update({
+      where: { slug: slug },
+      data,
+    });
+    res.json(post);
+  } catch (err) {
+    errorHandlerFunction(res, err);
+  }
+};
+
 module.exports = {
   store,
   show,
   index,
+  update,
 };

@@ -11,5 +11,6 @@ const {
 router.post('/', store);
 router.get('/:slug', show);
 router.get('/', index);
+router.put('/:slug', update);
 
 module.exports = router;
